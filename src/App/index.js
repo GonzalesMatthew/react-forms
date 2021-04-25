@@ -1,17 +1,33 @@
-import React from 'react';
 import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
 import firebaseConfig from '../helpers/apiKeys';
-import './App.scss';
+import { getStudents } from '../helpers/data/StudentData';
 import StudentForm from '../StudentForm';
+import StudentCard from '../components/StudentCard';
+import './App.scss';
 
+firebase.initializeApp(firebaseConfig);
 function App() {
-  firebase.initializeApp(firebaseConfig);
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    getStudents().then((resp) => setStudents(resp));
+  }, []);
+
+  console.warn(students);
 
   return (
     <div className='App'>
-      <StudentForm formTitle='New Student'/>
-      <StudentForm formTitle='New Teacher'/>
-      <StudentForm formTitle='New Employee'/>
+      <StudentForm formTitle="Form Name"/>
+      <hr/>
+      {students.map((studentInfo) => (
+        <StudentCard key={studentInfo}
+          name={studentInfo.name}
+          teacher={studentInfo.teacher}
+          grade={Number(studentInfo.grade)}
+          handleClick={() => console.warn(`${studentInfo.name}'s teacher is ${studentInfo.teacher}`)}
+          />
+      ))};
     </div>
   );
 }
