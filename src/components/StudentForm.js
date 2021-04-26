@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { addStudent } from './helpers/data/StudentData';
+import { addStudent } from '../helpers/data/StudentData';
 
-const StudentForm = ({ formTitle }) => {
+const StudentForm = ({ formTitle, setStudents }) => {
   const [student, setStudent] = useState({
     name: '',
     teacher: '',
@@ -19,7 +19,7 @@ const StudentForm = ({ formTitle }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addStudent(student);
+    addStudent(student).then((studentArray) => setStudents(studentArray));
   };
 
   return (
@@ -64,7 +64,8 @@ const StudentForm = ({ formTitle }) => {
 };
 
 StudentForm.propTypes = {
-  formTitle: PropTypes.string.isRequired
+  formTitle: PropTypes.string.isRequired,
+  setStudents: PropTypes.func
 };
 
 export default StudentForm;
