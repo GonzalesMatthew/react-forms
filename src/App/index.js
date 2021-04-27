@@ -14,8 +14,6 @@ function App() {
     getStudents().then((resp) => setStudents(resp));
   }, []);
 
-  console.warn(students);
-
   return (
     <div className='App'>
       <StudentForm
