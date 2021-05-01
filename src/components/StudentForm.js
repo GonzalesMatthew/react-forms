@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { addStudent, updateStudent } from '../helpers/data/StudentData';
 
 const StudentForm = (
@@ -12,6 +13,8 @@ const StudentForm = (
     firebaseKey
   }
 ) => {
+  const history = useHistory();
+
   const [student, setStudent] = useState({
     name: name || '',
     teacher: teacher || '',
@@ -32,7 +35,10 @@ const StudentForm = (
     if (student.firebaseKey) {
       updateStudent(student).then((studentArray) => setStudents(studentArray));
     } else {
-      addStudent(student).then((studentArray) => setStudents(studentArray));
+      addStudent(student).then((response) => {
+        setStudents(response);
+        history.push('/students');
+      });
     }
   };
 
